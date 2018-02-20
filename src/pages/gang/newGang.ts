@@ -48,13 +48,17 @@ export class NewGang {
 
   saveGang(){
     if(this.nbGanger >= this.nbNotGanger){
-      let toast = this.toastCtrl.create({
-        message: "Gang " + this.gangName + " ("+ this.gangHouse + ") is saved !",
-        duration: 1000,
-        position: 'top'
-      });
-      toast.present();
+      this.showToaster("Gang " + this.gangName + " ("+ this.gangHouse + ") is saved !");
     }
+  }
+
+  showToaster(msg){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 1000,
+      position: 'top'
+    });
+    toast.present();
   }
 
   isFighterMaxReached(fighter){
@@ -92,12 +96,7 @@ export class NewGang {
       this.gangFighters.push(fighter);
     } 
     else {
-      let toast = this.toastCtrl.create({
-        message: "Not enough credit !",
-        duration: 1000,
-        position: 'top'
-      });
-      toast.present();
+      this.showToaster("Not enough credit !");
     }
   }
 
