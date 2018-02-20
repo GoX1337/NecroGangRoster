@@ -1,0 +1,53 @@
+<ion-header>
+<ion-navbar>
+    <ion-title>New gang</ion-title>
+</ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-label>Gang</ion-label>
+            <ion-select [(ngModel)]="gangHouse" (ionChange)="onSelectChange($event)">
+                <ion-option *ngFor="let gang of gangNameList" value="{{gang}}">{{gang}}</ion-option>
+            </ion-select>
+        </ion-item> 
+        <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input type="text" [(ngModel)]="gangName" value=""></ion-input>
+        </ion-item>
+         
+        <ion-grid>
+            <ion-row>
+                <ion-col col-6>
+                    <ion-list>
+                        <button ion-item *ngFor="let fighter of fighters" (click)="addFighter(fighter)">
+                            <ion-icon name="add"></ion-icon>
+                                {{fighter.type}}
+                        </button>
+                    </ion-list>
+                </ion-col>
+
+                <ion-col col-6>
+                        <ion-list>
+                            <button ion-item *ngFor="let fighter of gangFighters; let i = index" (click)="removeFighter(fighter, i)">
+                                <ion-icon name="remove"></ion-icon>
+                                    {{fighter.type}}
+                            </button>  
+                        </ion-list>
+                                 
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <span>Total credits: {{credits}}</span>
+            </ion-row>
+            <ion-row>
+                <button (click)="saveGang()" ion-button icon-left color="dark" style="text-transform: none;">
+                    <ion-icon name="cloud-download"></ion-icon>
+                    Save
+                </button>
+            </ion-row>
+        </ion-grid>
+    </ion-list>
+</ion-content>
+      
