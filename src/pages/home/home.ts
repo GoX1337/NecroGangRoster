@@ -15,4 +15,8 @@ export class HomePage {
     this.navCtrl.push(NewGang);
   }
 
+  showGang(gang){
+
+  }
+
 }

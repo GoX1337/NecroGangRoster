@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import { AdMobFree, AdMobFreeBannerConfig, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
 
-import { Fighter } from './fighter';
+import { Fighter, FighterType } from './fighter';
 import { Goliath } from './goliath';
 import { Escher } from './esher';
+
+const maxNbChief = 1;
+const maxNbChampion = 3;
 
 @Component({
   templateUrl: 'newGang.html'
@@ -18,6 +21,11 @@ export class NewGang {
 
   fighters: Fighter[] = new Array();
   gangFighters: Fighter[] = new Array();
+
+  nbChampion : number = 0;
+  nbChief : number = 0;
+  nbGanger : number = 0;
+  nbNotGanger : number = 0;
 
     constructor(
       public navCtrl: NavController,
@@ -39,19 +47,79 @@ export class NewGang {
   }
 
   saveGang(){
-    let toast = this.toastCtrl.create({
-      message: "Gang " + this.gangName + " ("+ this.gangHouse + ") is saved !",
-      duration: 1000
-    });
-    toast.present();
+    if(this.nbGanger >= this.nbNotGanger){
+      let toast = this.toastCtrl.create({
+        message: "Gang " + this.gangName + " ("+ this.gangHouse + ") is saved !",
+        duration: 1000,
+        position: 'top'
+      });
+      toast.present();
+    }
+  }
+
+  isFighterMaxReached(fighter){
+      return (fighter.type == FighterType.CHIEF && this.nbChief == maxNbChief) 
+          || (fighter.type == FighterType.CHAMPION && this.nbChampion == maxNbChampion);
   }
 
   addFighter(fighter){
-    this.gangFighters.push(fighter);
-    this.credits -= fighter.creditValue;
+
+    if(fighter.type == FighterType.CHIEF)
+    {
+      this.nbChief++;
+      this.nbNotGanger++;
+      console.log("chief");
+    } 
+    else if(fighter.type == FighterType.CHAMPION)
+    {
+      this.nbChampion++;
+      this.nbNotGanger++;
+      console.log("champion");
+    }
+    if(fighter.type == FighterType.GANGER)
+    {
+      this.nbGanger++;
+      console.log("gang");
+    } 
+    else if(fighter.type == FighterType.JUVE)
+    {
+      this.nbNotGanger++;
+      console.log("juve");
+    }
+    
+    if(this.credits >= fighter.creditValue){
+      this.credits -= fighter.creditValue;
+      this.gangFighters.push(fighter);
+    } 
+    else {
+      let toast = this.toastCtrl.create({
+        message: "Not enough credit !",
+        duration: 1000,
+        position: 'top'
+      });
+      toast.present();
+    }
   }
 
   removeFighter(fighter, index){
+
+    if(fighter.type == FighterType.CHIEF)
+    {
+      this.nbChief--;
+    } 
+    else if(fighter.type == FighterType.CHAMPION)
+    {
+      this.nbChampion--
+    }
+    if(fighter.type == FighterType.GANGER)
+    {
+      this.nbGanger--
+    } 
+    else 
+    {
+      this.nbNotGanger--
+    }
+
     this.credits += fighter.creditValue;
     this.gangFighters.splice(index, 1);
   }

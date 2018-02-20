@@ -1,3 +1,4 @@
+
 export enum FighterType {
     JUVE = "Juve",
     GANGER = "Ganger",

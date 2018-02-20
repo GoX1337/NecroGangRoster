@@ -21,7 +21,7 @@
             <ion-row>
                 <ion-col col-6>
                     <ion-list>
-                        <button ion-item *ngFor="let fighter of fighters" (click)="addFighter(fighter)">
+                        <button [disabled]="isFighterMaxReached(fighter)" ion-item *ngFor="let fighter of fighters" (click)="addFighter(fighter)">
                             <ion-icon name="add"></ion-icon>
                                 {{fighter.type}}
                         </button>
@@ -29,20 +29,19 @@
                 </ion-col>
 
                 <ion-col col-6>
-                        <ion-list>
-                            <button ion-item *ngFor="let fighter of gangFighters; let i = index" (click)="removeFighter(fighter, i)">
-                                <ion-icon name="remove"></ion-icon>
-                                    {{fighter.type}}
-                            </button>  
-                        </ion-list>
-                                 
+                    <ion-list>
+                        <button ion-item *ngFor="let fighter of gangFighters; let i = index" (click)="removeFighter(fighter, i)">
+                            <ion-icon name="remove"></ion-icon>
+                                {{fighter.type}}
+                        </button>  
+                    </ion-list>         
                 </ion-col>
             </ion-row>
             <ion-row>
                 <span>Total credits: {{credits}}</span>
             </ion-row>
             <ion-row>
-                <button (click)="saveGang()" ion-button icon-left color="dark" style="text-transform: none;">
+                <button [disabled]="!gang && !gangName" (click)="saveGang()" ion-button icon-left color="dark" style="text-transform: none;">
                     <ion-icon name="cloud-download"></ion-icon>
                     Save
                 </button>
